@@ -1,6 +1,7 @@
 #include <iostream>
 #include <quartz/vec3.h>
 #include <quartz/color.h>
+#include <quartz/ray.h>
 
 int main(int, char **)
 {

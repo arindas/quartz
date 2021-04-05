@@ -12,6 +12,7 @@ namespace quartz
     {
         const T x, y, z;
 
+        vec3(): x{0}, y{0}, z{0} {}
         vec3(T x_, T y_, T z_) : x{x_}, y{y_}, z{z_} {}
 
         vec3 operator-() const { return vec3(-x, -y, -z); }
