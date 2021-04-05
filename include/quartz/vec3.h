@@ -2,7 +2,7 @@
 #define QUARTZ_VEC3_H
 
 #include <iostream>
-#include <cstdlib>
+#include <cmath>
 
 namespace quartz
 {
@@ -61,7 +61,7 @@ namespace quartz
     template <class T>
     inline vec3<T> operator/(const vec3<T> &u, T t)
     {
-        return (1 / t) * u;
+        return (1.0 / t) * u;
     }
 
     template <class T>
