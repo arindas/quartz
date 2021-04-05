@@ -37,7 +37,7 @@ namespace quartz
     template <class T>
     inline vec3<T> operator-(const vec3<T> &u, const vec3<T> &v)
     {
-        return vec3<T>(u.x + v.x, u.y + v.y, u.z + v.z);
+        return vec3<T>(u.x - v.x, u.y - v.y, u.z - v.z);
     }
 
     template <class T>
