@@ -19,7 +19,7 @@
 // We only need to check whether for the given coefficients for the equation in t, solutions
 // exist or not. We do that by checking whether the discriminant is greater than 0.
 // i.e b*b - 4*a*c > 0
-bool hit_sphere(const quartz::point3 &center, double radius, const quartz::ray &r)
+double hit_sphere(const quartz::point3 &center, double radius, const quartz::ray &r)
 {
     quartz::vec3<double> oc = r.origin - center; // A_ - C_
 
@@ -28,23 +28,30 @@ bool hit_sphere(const quartz::point3 &center, double radius, const quartz::ray &
     auto c = quartz::dot(oc, oc) - radius * radius; // dot(A_ - C_, A_ - C_) - r*r
 
     auto discriminant = b * b - 4 * a * c;
-    return (discriminant > 0);
+
+    return discriminant < 0 ? -1 : (-b - sqrt(discriminant)) / (2.0 * a);
 }
 
 // ray_color: temporary ray to color mapper for testing. Produces a blue to
 // white gradient from top to bottom.
 quartz::color ray_color(const quartz::ray &r)
 {
-    if (hit_sphere(quartz::point3(0, 0, -1), 0.5, r))
+    quartz::point3 sphere_center(0, 0, -1);
+    auto t = hit_sphere(sphere_center, 0.5, r);
+
+    if (t > 0.0)
     {
-        return quartz::color(1, 0, 0);
+        // normal vector: vector pointing to point of interesection on
+        // surface of sphere - center of sphere
+        quartz::vec3<double> N = quartz::unit_vector(r.at(t) - sphere_center);
+        return 0.5 * quartz::color(N.x + 1, N.y + 1, N.z + 1);
     }
 
     // obtain unit vector direction for given ray
     quartz::vec3<double> unit_direction = quartz::unit_vector(r.direction);
 
     // scale y component from [-1, 1] to [0, 1]
-    double t = (unit_direction.y + 1.0) * 0.5;
+    t = (unit_direction.y + 1.0) * 0.5;
 
     // linearly blend two colors with taking t as the blending factor
     const quartz::color white(1.0, 1.0, 1.0);
