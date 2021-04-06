@@ -67,7 +67,7 @@ namespace quartz
     template <class T>
     inline T dot(const vec3<T> &u, const vec3<T> &v)
     {
-        return u.x * v.x + u.y + v.y + u.z * v.z;
+        return u.x * v.x + u.y * v.y + u.z * v.z;
     }
 
     template <class T>
