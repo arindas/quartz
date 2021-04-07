@@ -19,17 +19,29 @@
 // We only need to check whether for the given coefficients for the equation in t, solutions
 // exist or not. We do that by checking whether the discriminant is greater than 0.
 // i.e b*b - 4*a*c > 0
+//
+// The formula can be simplified further as follows:
+//      t = (-b [+ -] sqrt(b*b - 4*a*c)) / (2*a)
+// 
+// Let half_b = b / 2 = dot(b_, A_ - C_). Substituting b = 2 * half_b in the above stmt.:
+//      t = (-2.0*half_b [+ -] sqrt(4*half_b*half_b - 4*a*c)) / (2*a)
+//      t = (-2.0*half_b [+ -] sqrt(4*half_b*half_b - 4*a*c)) / (2*a)
+//      t = (-half_b [+ -] sqrt(half_b*half_b - a*c)) / a
+//
+// Hence instead of computing the discriminant, we compute half_b*half_b - a*c for checking
+// the existence and values of roots. 
 double hit_sphere(const quartz::point3 &center, double radius, const quartz::ray &r)
 {
     quartz::vec3<double> oc = r.origin - center; // A_ - C_
 
-    auto a = quartz::dot(r.direction, r.direction); // dot(b_, b_)
-    auto b = 2.0 * quartz::dot(r.direction, oc);    // 2 * dot(b_, A_ - C_)
-    auto c = quartz::dot(oc, oc) - radius * radius; // dot(A_ - C_, A_ - C_) - r*r
+    // dot(x_, x_) = x_.length_squared()
 
-    auto discriminant = b * b - 4 * a * c;
+    auto a = r.direction.length_squared(); // dot(b_, b_)
+    auto half_b = quartz::dot(r.direction, oc);    // dot(b_, A_ - C_)
+    auto c = oc.length_squared() - radius * radius; // dot(A_ - C_, A_ - C_) - r*r
+    auto discriminant = half_b * half_b - a * c;
 
-    return discriminant < 0 ? -1 : (-b - sqrt(discriminant)) / (2.0 * a);
+    return discriminant < 0 ? -1 : (-half_b - sqrt(discriminant)) / a;
 }
 
 // ray_color: temporary ray to color mapper for testing. Produces a blue to
