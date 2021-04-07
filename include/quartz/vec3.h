@@ -10,7 +10,7 @@ namespace quartz
     template <class T>
     struct vec3
     {
-        const T x, y, z;
+        T x, y, z;
 
         vec3(): x{0}, y{0}, z{0} {}
         vec3(T x_, T y_, T z_) : x{x_}, y{y_}, z{z_} {}

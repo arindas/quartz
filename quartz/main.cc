@@ -1,75 +1,42 @@
 #include <iostream>
-#include <quartz/vec3.h>
+#include <functional>
+
+#include <quartz/common.h>
 #include <quartz/color.h>
-#include <quartz/ray.h>
+#include <quartz/scene.h>
+#include <quartz/sphere.h>
 
-// hit_sphere: function to determine whether a ray hits a sphere centred at the given point
-// with the given radius. The equation for a point intersecting on the surface of a sphere
-// is given as follows:
-//      t*t * dot(b_, b_) + 2*t * dot(b, A_ - C_) + dot(A_ - C_, A_ - C_) - r*r = 0
-// where
-//  the ray is denoted by P(t) = A_ + dot(b_, t)
-//  the sphere is centered at C_ with radius r
-//
-// Comparing this equation with at*T + b*t + c, i.e a quadratic equation in t, we have:
-//      a = dot(b_, b_)
-//      b = 2 * dot(b_, A_ - C_)
-//      c = dot(A_ - C_, A_ - C_) - r*r
-//
-// We only need to check whether for the given coefficients for the equation in t, solutions
-// exist or not. We do that by checking whether the discriminant is greater than 0.
-// i.e b*b - 4*a*c > 0
-//
-// The formula can be simplified further as follows:
-//      t = (-b [+ -] sqrt(b*b - 4*a*c)) / (2*a)
-// 
-// Let half_b = b / 2 = dot(b_, A_ - C_). Substituting b = 2 * half_b in the above stmt.:
-//      t = (-2.0*half_b [+ -] sqrt(4*half_b*half_b - 4*a*c)) / (2*a)
-//      t = (-2.0*half_b [+ -] sqrt(4*half_b*half_b - 4*a*c)) / (2*a)
-//      t = (-half_b [+ -] sqrt(half_b*half_b - a*c)) / a
-//
-// Hence instead of computing the discriminant, we compute half_b*half_b - a*c for checking
-// the existence and values of roots. 
-double hit_sphere(const quartz::point3 &center, double radius, const quartz::ray &r)
+// gradient_color: maps t to a linearly interpolated color, t is expected to be [-1, 1]
+quartz::color gradient_color(quartz::color start, quartz::color end, double t)
 {
-    quartz::vec3<double> oc = r.origin - center; // A_ - C_
-
-    // dot(x_, x_) = x_.length_squared()
-
-    auto a = r.direction.length_squared(); // dot(b_, b_)
-    auto half_b = quartz::dot(r.direction, oc);    // dot(b_, A_ - C_)
-    auto c = oc.length_squared() - radius * radius; // dot(A_ - C_, A_ - C_) - r*r
-    auto discriminant = half_b * half_b - a * c;
-
-    return discriminant < 0 ? -1 : (-half_b - sqrt(discriminant)) / a;
+    return t * start + (1.0 - t) * end;
 }
 
-// ray_color: temporary ray to color mapper for testing. Produces a blue to
-// white gradient from top to bottom.
-quartz::color ray_color(const quartz::ray &r)
+quartz::color gradient_background(const quartz::ray &r)
 {
-    quartz::point3 sphere_center(0, 0, -1);
-    auto t = hit_sphere(sphere_center, 0.5, r);
-
-    if (t > 0.0)
-    {
-        // normal vector: vector pointing to point of interesection on
-        // surface of sphere - center of sphere
-        quartz::vec3<double> N = quartz::unit_vector(r.at(t) - sphere_center);
-        return 0.5 * quartz::color(N.x + 1, N.y + 1, N.z + 1);
-    }
-
-    // obtain unit vector direction for given ray
     quartz::vec3<double> unit_direction = quartz::unit_vector(r.direction);
-
     // scale y component from [-1, 1] to [0, 1]
-    t = (unit_direction.y + 1.0) * 0.5;
+    auto t = 0.5 * (unit_direction.y + 1.0);
 
     // linearly blend two colors with taking t as the blending factor
     const quartz::color white(1.0, 1.0, 1.0);
     const quartz::color blue(0.5, 0.7, 1.0);
 
-    return (1.0 - t) * white + t * blue;
+    return gradient_color(blue, white, t);
+}
+
+// ray_color: hits the ray with the given hittable and computes the color
+quartz::color ray_color(const quartz::ray &r,
+                        const quartz::hittable &world,
+                        std::function<quartz::color(const quartz::ray &)> background)
+{
+    quartz::hit_record rec;
+    if (world.hit(r, 0, infinity, rec))
+    {
+        return 0.5 * (rec.normal + quartz::color(1, 1, 1));
+    }
+
+    return background(r);
 }
 
 int main(int, char **)
@@ -78,6 +45,11 @@ int main(int, char **)
     const auto aspect_ratio = 16.0 / 9.0;
     const int image_width = 400;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
+
+    // World
+    quartz::scene world;
+    world.add(std::make_shared<quartz::sphere>(quartz::point3(0, 0, -1), 0.5));
+    world.add(std::make_shared<quartz::sphere>(quartz::point3(0, -100.5, -1), 100));
 
     // Camera
     auto viewport_height = 2.0;
@@ -103,8 +75,7 @@ int main(int, char **)
             auto v = double(j) / (image_height - 1);
 
             quartz::ray r(origin, lower_left_corner + u * horizontal + v * vertical - origin);
-            quartz::color pixel_color = ray_color(r);
-
+            quartz::color pixel_color = ray_color(r, world, gradient_background);
             quartz::write_color(std::cout, pixel_color);
         }
     }
