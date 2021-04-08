@@ -12,7 +12,7 @@ namespace quartz
     {
         T x, y, z;
 
-        vec3(): x{0}, y{0}, z{0} {}
+        vec3() : x{0}, y{0}, z{0} {}
         vec3(T x_, T y_, T z_) : x{x_}, y{y_}, z{z_} {}
 
         vec3 operator-() const { return vec3(-x, -y, -z); }
@@ -20,6 +20,24 @@ namespace quartz
         double length_squared() const { return x * x + y * y + z * z; }
 
         double length() const { return sqrt(length_squared()); }
+
+        vec3 &operator+=(const vec3 &v)
+        {
+            x += v.x;
+            y += v.y;
+            z += v.z;
+            return *this;
+        }
+
+        vec3 &operator*=(T t)
+        {
+            x *= t;
+            y *= t;
+            z *= t;
+            return *this;
+        }
+
+        vec3 &operator/=(T t) { return *this *= 1 / t; }
     };
 
     template <class T>
@@ -79,13 +97,13 @@ namespace quartz
     }
 
     template <class T>
-    inline vec3<T> unit_vector(const vec3<T> u) {
+    inline vec3<T> unit_vector(const vec3<T> u)
+    {
         return u / u.length();
     }
 
     using point3 = vec3<double>;
     using color = vec3<double>;
 };
-
 
 #endif
