@@ -41,7 +41,7 @@ namespace quartz
     };
 
     template <class T>
-    inline std::ostream &operator<<(std::ostream out, vec3<T> &v)
+    inline std::ostream &operator<<(std::ostream &out, vec3<T> &v)
     {
         return out << v.x << " " << v.y << " " << v.z;
     }

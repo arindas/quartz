@@ -29,6 +29,10 @@ inline double clamp(double x, double min, double max) {
     return x < min? min: x > max? max: x;
 }
 
+inline double noisy_scale_to_0_1(int x, int max_value) {
+    return double(x + random_double()) / (max_value - 1);
+}
+
 // Common headers
 #include <quartz/vec3.h>
 #include <quartz/ray.h>
