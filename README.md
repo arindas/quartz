@@ -2,7 +2,7 @@
 
 A single threaded ray tracing engine.
 
-![antialiased sphere 1080p](./assets/antialiased_sphere_new_1080p.png)
+![antialiased sphere 1080p](./assets/lambertian_sphere_with_hemispherical_diffusion_1080p.png)
 
 ## Building:
 
