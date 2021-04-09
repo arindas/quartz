@@ -15,7 +15,7 @@ cmake ..
 make
 ```
 
-This produces a binary `quartz` at quartz/build/quartz
+This produces a binary `quartz` at `quartz/build/quartz`.
 
 ## Usage:
 
