@@ -10,8 +10,8 @@ namespace quartz
     // scaling parameter, to move along the ray.
     struct ray
     {
-        const point3 origin;
-        const vec3<double> direction;
+        point3 origin;
+        vec3<double> direction;
 
         ray() {}
         ray(const point3 &orig, const vec3<double> &dir)
