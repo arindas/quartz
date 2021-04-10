@@ -20,14 +20,14 @@ This produces a binary `quartz` at `quartz/build/quartz`.
 ## Usage:
 
 Right now, quartz writes `.ppm` images to the standard output. Hence, users
-are request to redirect it's output to a file:
+are requested to redirect it's output to a file:
 
 ```
 ./quartz > output_image.ppm
 ```
 
 Most image viewers can view `.ppm` files natively. However, for conveniently
-sharing the images, ppm images can be converter to other formats using
+sharing the images, ppm images can be converted to other formats using
 ImageMagick's convert tool on Linux. For instance, to convert to png:
 
 ```
@@ -39,7 +39,7 @@ Later, `quartz` will have native support for multiple formats.
 ## Configuration:
 
 `quartz` at it's core is a header only library. All scene configuration is specified
-in quartz/main.cc, it being the only c++ source file in this repository.
+in `quartz/main.cc`, it being the only c++ source file in this repository.
 
 Image size is configured as:
 ```cpp
