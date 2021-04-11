@@ -29,14 +29,14 @@ int main(int, char **)
 {
     // Image with 16:9 aspect ratio, 225 px tall
     quartz::image_size size = quartz::get_image_size(16.0 / 9.0, // aspect ratio
-                                                     1080);       // image height
+                                                     225);       // image height
 
     // World
     quartz::scene world;
     auto material_ground = std::make_shared<quartz::lambertian>(quartz::color(0.8, 0.8, 0.0));
     auto material_center = std::make_shared<quartz::lambertian>(quartz::color(0.7, 0.3, 0.3));
-    auto material_left = std::make_shared<quartz::metal>(quartz::color(0.8, 0.8, 0.8));
-    auto material_right = std::make_shared<quartz::metal>(quartz::color(0.8, 0.6, 0.2));
+    auto material_left = std::make_shared<quartz::metal>(quartz::color(0.8, 0.8, 0.8), 0.3);
+    auto material_right = std::make_shared<quartz::metal>(quartz::color(0.8, 0.6, 0.2), 1.0);
 
     world.add(std::make_shared<quartz::sphere>(quartz::point3(0.0, -100.5, -1.0), 100.0, material_ground));
     world.add(std::make_shared<quartz::sphere>(quartz::point3(0.0, 0.0, -1.0), 0.5, material_center));

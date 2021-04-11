@@ -11,7 +11,7 @@ namespace quartz
     class metal : public material
     {
     public:
-        metal(const color &c) : albedo{c} {}
+        metal(const color &c, double f) : albedo{c}, fuzz{f} {}
 
         virtual bool scatter(const ray &r_in,       // incident ray
                              const hit_record &rec, // ray-surface hit details
@@ -21,13 +21,15 @@ namespace quartz
             vec3<double> reflected = reflect(unit_vector(r_in.direction),
                                              rec.normal);
 
-            scattered = ray(rec.p, reflected);
+            scattered = ray(rec.p,
+                            reflected + fuzz * random_double_vec3_in_unit_sphere());
             attentuation = albedo;
             return (dot(scattered.direction, rec.normal) > 0);
         }
 
     private:
         color albedo;
+        double fuzz;
     };
 
 } // namespace quartz
