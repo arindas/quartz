@@ -78,4 +78,10 @@ inline double noisy_scale_to_0_1(int x, int max_value)
     return double(x + random_double()) / (max_value - 1);
 }
 
+inline bool near_zero(const quartz::vec3<double> &v)
+{
+    const auto s = 1e-8;
+    return (fabs(v.x) < s) && (fabs(v.y) < s) && (fabs(v.z) < s);
+}
+
 #endif

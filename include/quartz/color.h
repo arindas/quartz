@@ -43,11 +43,10 @@ namespace quartz
         // ray_tracer::trace(): computes the color for a traced ray
         color trace(const ray &r, const hittable &world) const
         {
-            double coeff = 1.0;
             hit_record rec;
-            ray r_{r};
 
-            ray &traced_ray = r_;
+            color coeff(1.0, 1.0, 1.0);
+            ray traced_ray(r);
 
             int depth = trace_depth;
             while (depth-- > 0)
@@ -55,17 +54,24 @@ namespace quartz
                 if (!world.hit(traced_ray, 0.001, infinity, rec))
                     break;
 
-                // point3 target = rec.p + rec.normal +
-                //                 unit_vector(
-                //                     random_double_vec3_in_unit_sphere());
-                point3 target = rec.p + random_in_hemisphere(rec.normal);
+                ray scattered;
+                color attenuation;
 
-                coeff *= 0.5;
-                traced_ray = ray(rec.p, target - rec.p);
+                if (!rec.mat_ptr->scatter(traced_ray,
+                                          rec,
+                                          attenuation,
+                                          scattered))
+                {
+                    depth = -1;
+                    break;
+                }
+
+                coeff *= attenuation;
+                traced_ray = scattered;
             }
 
-            return depth > 0 ? coeff * background(traced_ray)
-                             : coeff * color(0, 0, 0);
+            return depth >= 0 ? coeff * background(traced_ray)
+                              : color(0, 0, 0);
         }
     };
 }

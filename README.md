@@ -2,7 +2,7 @@
 
 A single threaded ray tracing engine.
 
-![antialiased sphere 1080p](./assets/lambertian_sphere_with_hemispherical_diffusion_1080p.png)
+![antialiased sphere 1080p](./assets/metal_and_lambertian_materials_non_recursive_1080p.png)
 
 ## Building:
 
@@ -79,7 +79,7 @@ The only `quartz::image_writer` implementation right now is `quartz::ppm_image_w
 
 ## TODO
 
-- [ ] Add support for different materials
+- [x] Add support for different materials
 - [ ] Parallelize the render loop
 - [ ] Add support for different image formats.
 - [ ] Add support for multiple 3D hittables.

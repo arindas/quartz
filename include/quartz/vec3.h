@@ -29,6 +29,14 @@ namespace quartz
             return *this;
         }
 
+        vec3 &operator*=(const vec3 &v)
+        {
+            x *= v.x;
+            y *= v.y;
+            z *= v.z;
+            return *this;
+        }
+
         vec3 &operator*=(T t)
         {
             x *= t;
@@ -100,6 +108,12 @@ namespace quartz
     inline vec3<T> unit_vector(const vec3<T> u)
     {
         return u / u.length();
+    }
+
+    template <class T>
+    inline vec3<T> reflect(const vec3<T> &v, const vec3<T> &n)
+    {
+        return v - 2 * dot(v, n) * n;
     }
 
     using point3 = vec3<double>;

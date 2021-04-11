@@ -1,7 +1,9 @@
 #ifndef QUARTZ_HITTABLE_H
 #define QUARTZ_HITTABLE_H
 
+#include <quartz/material.h>
 #include <quartz/ray.h>
+#include <memory>
 
 namespace quartz
 {
@@ -14,10 +16,13 @@ namespace quartz
         bool front_face;     // whether or not the ray is coming
                              // towards the front_face
 
+        std::shared_ptr<material> mat_ptr; // material of the surface hit by the ray
+
         // set_face_normal: sets face normal opposite the direction of ray incidence
-        inline void set_face_normal(const ray& r, const vec3<double>& outward_normal) {
+        inline void set_face_normal(const ray &r, const vec3<double> &outward_normal)
+        {
             front_face = dot(r.direction, outward_normal) < 0;
-            normal = front_face? outward_normal: -outward_normal;
+            normal = front_face ? outward_normal : -outward_normal;
         }
     };
 
