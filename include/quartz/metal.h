@@ -16,7 +16,7 @@ namespace quartz
         virtual bool scatter(const ray &r_in,       // incident ray
                              const hit_record &rec, // ray-surface hit details
                              color &attentuation,   // attentuation color
-                             ray &scattered) const
+                             ray &scattered) const override
         {
             vec3<double> reflected = reflect(unit_vector(r_in.direction),
                                              rec.normal);

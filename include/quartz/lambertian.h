@@ -15,7 +15,7 @@ namespace quartz
         virtual bool scatter(const ray &r_in,       // incident ray
                              const hit_record &rec, // ray-surface hit details
                              color &attentuation,   // attentuation color
-                             ray &scattered) const
+                             ray &scattered) const override
         {
             auto scatter_direction = rec.normal +
                                      unit_vector(

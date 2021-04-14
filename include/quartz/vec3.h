@@ -116,6 +116,14 @@ namespace quartz
         return v - 2 * dot(v, n) * n;
     }
 
+    template <class T>
+    inline vec3<T> refract(const vec3<T> &uv, const vec3<T> &n, double etai_over_etat) {
+        auto cos_theta = fmin(dot(-uv, n), 1.0);
+        vec3<T> r_out_perp = etai_over_etat * (uv + cos_theta*n);
+        vec3<T> r_out_parallel = -sqrt(fabs(1.0 - r_out_perp.length_squared())) * n;
+        return r_out_perp + r_out_parallel;
+    }
+
     using point3 = vec3<double>;
     using color = vec3<double>;
 };
