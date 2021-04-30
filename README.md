@@ -1,6 +1,6 @@
 # quartz
 
-A single threaded ray tracing engine.
+A shared memory parallelism based ray tracing engine.
 
 ![antialiased sphere 1080p](./assets/metal_and_lambertian_materials_non_recursive_1080p.png)
 
@@ -9,10 +9,8 @@ A single threaded ray tracing engine.
 ```
 git clone git@github.com:arindas/quartz.git
 cd quartz/
-mkdir build
-cd build
-cmake ..
-make
+mkdir build && cd build
+cmake .. && make
 ```
 
 This produces a binary `quartz` at `quartz/build/quartz`.
@@ -80,6 +78,7 @@ The only `quartz::image_writer` implementation right now is `quartz::ppm_image_w
 ## TODO
 
 - [x] Add support for different materials
-- [ ] Parallelize the render loop
+- [x] Parallelize the render loop
+- [x] Add support for camera
 - [ ] Add support for different image formats.
 - [ ] Add support for multiple 3D hittables.
