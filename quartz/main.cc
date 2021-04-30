@@ -28,9 +28,12 @@ quartz::color gradient_background(const quartz::ray &r)
 
 int main(int, char **)
 {
+    auto aspect_ratio = 16.0 / 9.0;
+    auto image_height = 225;
+    
     // Image with 16:9 aspect ratio, 225 px tall
-    quartz::image_size size = quartz::get_image_size(16.0 / 9.0, // aspect ratio
-                                                     540);       // image height
+    quartz::image_size size = quartz::get_image_size(aspect_ratio,  // aspect ratio
+                                                     image_height); // image height
 
     // World
     quartz::scene world;
@@ -46,7 +49,7 @@ int main(int, char **)
     world.add(std::make_shared<quartz::sphere>(quartz::point3(1.0, 0.0, -1.0), 0.5, material_right));
 
     // Camera
-    quartz::camera cam;
+    quartz::camera cam(120, aspect_ratio);
 
     quartz::ray_tracer tracer(gradient_background);
 

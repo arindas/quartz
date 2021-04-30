@@ -15,12 +15,14 @@ namespace quartz
         vec3<double> vertical;
 
     public:
-        camera()
+        camera(double vfov, double aspect_ratio)
         {
-            auto aspect_ratio = 16.0 / 9.0;
-            auto viewport_height = 2.0;
-            auto focal_length = 1.0;
+            auto theta = degress_to_radians(vfov);
+            auto h = tan(theta / 2);
+            auto viewport_height = 2.0 * h;
             auto viewport_width = aspect_ratio * viewport_height;
+
+            auto focal_length = 1.0;
             origin = point3(0.0, 0.0, 0.0);
 
             horizontal = vec3<double>(viewport_width, 0.0, 0.0);
