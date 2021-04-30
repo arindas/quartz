@@ -30,7 +30,7 @@ int main(int, char **)
 {
     auto aspect_ratio = 16.0 / 9.0;
     auto image_height = 225;
-    
+
     // Image with 16:9 aspect ratio, 225 px tall
     quartz::image_size size = quartz::get_image_size(aspect_ratio,  // aspect ratio
                                                      image_height); // image height
@@ -49,7 +49,11 @@ int main(int, char **)
     world.add(std::make_shared<quartz::sphere>(quartz::point3(1.0, 0.0, -1.0), 0.5, material_right));
 
     // Camera
-    quartz::camera cam(120, aspect_ratio);
+    quartz::camera cam(quartz::point3(-2, 2, 1),      // look from
+                       quartz::point3(0, 0, -1),      // look at
+                       quartz::vec3<double>(0, 1, 0), // vector pointing upwards
+                       90,                            // vertical field of view in degrees
+                       aspect_ratio);                 // aspect ratio
 
     quartz::ray_tracer tracer(gradient_background);
 

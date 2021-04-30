@@ -100,7 +100,7 @@ namespace quartz
     inline vec3<T> cross(const vec3<T> &u, const vec3<T> &v)
     {
         return vec3<T>(u.y * v.z - u.z * v.y,
-                       u.x * v.z - u.z * v.x,
+                       u.z * v.x - u.x * v.z,
                        u.x * v.y - u.y * v.x);
     }
 
