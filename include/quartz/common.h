@@ -57,7 +57,20 @@ inline quartz::vec3<double> random_double_vec3_in_unit_sphere()
     }
 }
 
-quartz::vec3<double> random_in_hemisphere(const quartz::vec3<double> &normal)
+inline quartz::vec3<double> random_in_unit_disk()
+{
+    while (true)
+    {
+        auto p = quartz::vec3<double>(random_double(-1, 1),
+                                      random_double(-1, 1),
+                                      0);
+        if (p.length_squared() >= 1)
+            continue;
+        return p;
+    }
+}
+
+inline quartz::vec3<double> random_in_hemisphere(const quartz::vec3<double> &normal)
 {
     quartz::vec3<double> in_unit_sphere = random_double_vec3_in_unit_sphere();
     if (dot(in_unit_sphere, normal) > 0.0) // In the same hemisphere as the normal

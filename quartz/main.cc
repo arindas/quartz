@@ -48,12 +48,13 @@ int main(int, char **)
     world.add(std::make_shared<quartz::sphere>(quartz::point3(-1.0, 0.0, -1.0), -0.4, material_left));
     world.add(std::make_shared<quartz::sphere>(quartz::point3(1.0, 0.0, -1.0), 0.5, material_right));
 
-    // Camera
-    quartz::camera cam(quartz::point3(-2, 2, 1),      // look from
-                       quartz::point3(0, 0, -1),      // look at
-                       quartz::vec3<double>(0, 1, 0), // vector pointing upwards
-                       20,                            // vertical field of view in degrees
-                       aspect_ratio);                 // aspect ratio
+    quartz::point3 lookfrom(3, 3, 2);
+    quartz::point3 lookat(0, 0, -1);
+    quartz::vec3<double> vup(0, 1, 0);
+    auto dist_to_focus = (lookfrom - lookat).length();
+    auto aperture = 2.0;
+
+    quartz::camera cam(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus);
 
     quartz::ray_tracer tracer(gradient_background);
 
