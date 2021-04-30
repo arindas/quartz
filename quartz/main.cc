@@ -30,7 +30,7 @@ int main(int, char **)
 {
     // Image with 16:9 aspect ratio, 225 px tall
     quartz::image_size size = quartz::get_image_size(16.0 / 9.0, // aspect ratio
-                                                     225);       // image height
+                                                     540);       // image height
 
     // World
     quartz::scene world;

@@ -1,8 +1,10 @@
 #ifndef QUARTZ_RENDER_H
 #define QUARTZ_RENDER_H
 
-#include <quartz/image.h>
 #include <quartz/camera.h>
+#include <quartz/image.h>
+
+#include <omp.h>
 
 namespace quartz
 {
@@ -27,9 +29,10 @@ namespace quartz
                                        const camera &cam,
                                        int samples_per_pixel)
     {
+        #pragma omp parallel for default(none) shared(sink, samples_per_pixel, cam, tracer, world)
         for (int j = sink.size.image_height - 1; j >= 0; --j)
         {
-            std::cerr << "\rScanlines remaining: " << j << " " << std::flush;
+            // std::cerr << "\rScanlines remaining: " << j << " " << std::flush;
             for (int i = 0; i < sink.size.image_width; i++)
             {
                 quartz::color pixel_color(0, 0, 0);
