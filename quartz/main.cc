@@ -52,7 +52,7 @@ int main(int, char **)
     quartz::camera cam(quartz::point3(-2, 2, 1),      // look from
                        quartz::point3(0, 0, -1),      // look at
                        quartz::vec3<double>(0, 1, 0), // vector pointing upwards
-                       90,                            // vertical field of view in degrees
+                       20,                            // vertical field of view in degrees
                        aspect_ratio);                 // aspect ratio
 
     quartz::ray_tracer tracer(gradient_background);
