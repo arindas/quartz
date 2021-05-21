@@ -71,6 +71,19 @@ renderer_.render(tracer, cam, samples_per_pixel);
 ...
 ```
 
+Camera properties are configured as follows:
+```
+...
+quartz::point3 lookfrom(3, 3, 2);
+quartz::point3 lookat(0, 0, -1);
+quartz::vec3<double> vup(0, 1, 0);
+auto dist_to_focus = (lookfrom - lookat).length();
+auto aperture = 2.0;
+
+quartz::camera cam(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus);
+...
+```
+
 `quartz` renders images to an in-memory buffer (`quartz::image_sink`) first. The contents
 of this buffer are later serialized by different implementations of `quartz::image_writer`.
 The only `quartz::image_writer` implementation right now is `quartz::ppm_image_writer`.
